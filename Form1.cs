@@ -1,10 +1,12 @@
 namespace TDGPGasReader
 {
+    using System.Globalization;
     using System.IO.Ports;
 
     public partial class Form1 : Form
     {
         private SerialPort serialPort1;
+        private string dataBuffer = "";
 
         public Form1()
         {
@@ -80,13 +82,173 @@ namespace TDGPGasReader
             }
         }
 
+        //private void SerialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        //{
+        //    string data = serialPort1.ReadExisting();
+        //    this.ParseDataToValues(data);
+        //    Invoke(new MethodInvoker(delegate
+        //    {
+        //        txtTerminal.AppendText(data);
+        //    }));
+        //}
+
         private void SerialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            string data = serialPort1.ReadExisting();
-            Invoke(new MethodInvoker(delegate
+            dataBuffer += serialPort1.ReadExisting();  // Concatena os novos dados no buffer existente
+            if (dataBuffer.Contains("\n"))  // Verifica se existe uma nova linha completa
             {
-                txtTerminal.AppendText(data);
-            }));
+                // Separa as linhas no buffer
+                var lines = dataBuffer.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string lastCompleteLine = lines.Last();  // Pega a última linha completa
+                dataBuffer = "";  // Limpa o buffer
+
+                this.ParseDataToValues(lastCompleteLine);  // Processa a última linha completa
+
+                Invoke(new MethodInvoker(delegate
+                {
+                    txtTerminal.AppendText(lastCompleteLine + Environment.NewLine);  // Atualiza o terminal com a última linha
+                }));
+            }
         }
+
+        private int SafeParseInt(string input)
+        {
+            return int.TryParse(input, out int result) ? result : 0;
+        }
+
+        private double SafeParseDouble(string input)
+        {
+            // Tenta converter usando a cultura en-US que usa o ponto como separador decimal
+            bool success = double.TryParse(input, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out double result);
+            return success ? result : 0.0;
+        }
+
+        public void ParseDataToValues(string data)
+        {
+            try
+            {
+                // Remove o espaço inicial antes de dividir, se existir.
+                data = data.Trim();
+
+                // Divide a string em partes usando a vírgula como separador
+                string[] parts = data.Split(',');
+
+                // Extrai cada parte para a variável correspondente
+                string measurementType = parts[0].Substring(0, 1);  // Obtém o 'P'
+                int year = SafeParseInt(parts[0].Substring(2));     // Converte para inteiro o ano, que começa na posição 2 da primeira parte
+                int month = SafeParseInt(parts[1]);
+                int day = SafeParseInt(parts[2]);
+                int hour = SafeParseInt(parts[3]);
+                int minute = SafeParseInt(parts[4]);
+                int second = SafeParseInt(parts[5]);
+                double temperature = SafeParseDouble(parts[6]);
+                double pressure = SafeParseDouble(parts[7]);
+                double supplyVoltage = SafeParseDouble(parts[8]);
+
+                double atm = this.SetATM(pressure);
+                double convertedN2Pressure = this.SetN2Concentration(atm);
+                double nitrogenMass = this.SetNitrogenMass(convertedN2Pressure);
+                double n2Percentual = this.SetN2Percentual(nitrogenMass);
+
+                // Exibe ou utiliza as variáveis
+                Console.WriteLine($"Measurement Type: {measurementType}");
+                Console.WriteLine($"Year: {year}");
+                Console.WriteLine($"Month: {month}");
+                Console.WriteLine($"Day: {day}");
+                Console.WriteLine($"Hour: {hour}");
+                Console.WriteLine($"Minute: {minute}");
+                Console.WriteLine($"Second: {second}");
+                Console.WriteLine($"Pressure Sensor Temperature: {temperature} °C");
+                Console.WriteLine($"Pressure: {pressure} mbar");
+                Console.WriteLine($"Supply Voltage: {supplyVoltage} V");
+            }
+            catch (Exception e) { Console.WriteLine(e.ToString()); }
+
+        }
+
+        public double SetATM(double pressure)
+        {
+            double constant = 0.00098923;
+            double atm = pressure * constant;
+
+            if (labelATM.InvokeRequired)
+            {
+                labelATM.Invoke(new MethodInvoker(delegate
+                {
+                    labelATM.Text = atm.ToString("F5"); // F5 para formatar com 5 casas decimais
+                }));
+            }
+            else
+            {
+                labelATM.Text = atm.ToString("F5");
+            }
+
+            return atm;
+        }
+
+        public double SetN2Concentration(double atm)
+        {
+            double conversionFactor = Math.Pow(10, -5);
+            double convertedPressure = atm * conversionFactor;
+
+            if (labelConcentracaoN2.InvokeRequired)
+            {
+                labelConcentracaoN2.Invoke(new MethodInvoker(delegate
+                {
+                    labelConcentracaoN2.Text = convertedPressure.ToString("F5");
+                }));
+            }
+            else
+            {
+                labelConcentracaoN2.Text = convertedPressure.ToString("F5");
+            }
+
+            return convertedPressure;
+        }
+
+
+        public double SetNitrogenMass(double n2Concentration)
+        {
+            double constant = 28.01;
+            double nitrogenMass = n2Concentration * constant;
+
+            if (labelMassaDeNitrogenio.InvokeRequired)
+            {
+                labelMassaDeNitrogenio.Invoke(new MethodInvoker(delegate
+                {
+                    labelMassaDeNitrogenio.Text = nitrogenMass.ToString("F5");
+                }));
+            }
+            else
+            {
+                labelMassaDeNitrogenio.Text = nitrogenMass.ToString("F5");
+            }
+
+            return nitrogenMass;
+        }
+
+
+        public double SetN2Percentual(double nitrogenMass)
+        {
+            double constant = 0.000258;
+            double n2Percentual = 1 - ((nitrogenMass - constant) / constant);
+
+            string n2PercentualStringed = (n2Percentual * 100).ToString("F5") + '%';
+
+            if (labelPorcentagemN2.InvokeRequired)
+            {
+                labelPorcentagemN2.Invoke(new MethodInvoker(delegate
+                {
+                    labelPorcentagemN2.Text = n2PercentualStringed;
+                }));
+            }
+            else
+            {
+                labelPorcentagemN2.Text = n2PercentualStringed;
+            }
+
+            return n2Percentual;
+        }
+
     }
 }
