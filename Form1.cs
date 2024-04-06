@@ -7,6 +7,7 @@ namespace TDGPGasReader
     {
         private SerialPort serialPort1;
         private string dataBuffer = "";
+        private bool started = false;
 
         public Form1()
         {
@@ -102,8 +103,11 @@ namespace TDGPGasReader
                 string lastCompleteLine = lines.Last();  // Pega a última linha completa
                 dataBuffer = "";  // Limpa o buffer
 
-                this.ParseDataToValues(lastCompleteLine);  // Processa a última linha completa
+                if (this.started)
+                {
+                    this.ParseDataToValues(lastCompleteLine);  // Processa a última linha completa
 
+                }
                 Invoke(new MethodInvoker(delegate
                 {
                     txtTerminal.AppendText(lastCompleteLine + Environment.NewLine);  // Atualiza o terminal com a última linha
@@ -250,5 +254,14 @@ namespace TDGPGasReader
             return n2Percentual;
         }
 
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            this.started = true;
+        }
+
+        private void buttonStop_Click(object sender, EventArgs e)
+        {
+            this.started = false;
+        }
     }
 }
