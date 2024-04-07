@@ -167,7 +167,7 @@
             // buttonStart
             // 
             buttonStart.AutoSize = true;
-            buttonStart.Location = new Point(12, 239);
+            buttonStart.Location = new Point(12, 221);
             buttonStart.Name = "buttonStart";
             buttonStart.Size = new Size(75, 25);
             buttonStart.TabIndex = 9;
@@ -177,7 +177,7 @@
             // 
             // buttonStop
             // 
-            buttonStop.Location = new Point(109, 239);
+            buttonStop.Location = new Point(109, 221);
             buttonStop.Name = "buttonStop";
             buttonStop.Size = new Size(75, 25);
             buttonStop.TabIndex = 10;

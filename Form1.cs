@@ -154,18 +154,6 @@ namespace TDGPGasReader
                 double nitrogenMass = this.SetNitrogenMass(convertedN2Pressure);
                 double n2Percentual = this.SetN2Percentual(nitrogenMass);
                 this.SetTemperature(temperature);
-
-                // Exibe ou utiliza as variáveis
-                Console.WriteLine($"Measurement Type: {measurementType}");
-                Console.WriteLine($"Year: {year}");
-                Console.WriteLine($"Month: {month}");
-                Console.WriteLine($"Day: {day}");
-                Console.WriteLine($"Hour: {hour}");
-                Console.WriteLine($"Minute: {minute}");
-                Console.WriteLine($"Second: {second}");
-                Console.WriteLine($"Pressure Sensor Temperature: {temperature} °C");
-                Console.WriteLine($"Pressure: {pressure} mbar");
-                Console.WriteLine($"Supply Voltage: {supplyVoltage} V");
             }
             catch (Exception e) { Console.WriteLine(e.ToString()); }
 
