@@ -8,7 +8,7 @@ namespace TDGPGasReader.Model.Excel
     {
         public ExcelManagerModel() { }
 
-        public void SaveDataToExcel(string filePath, List<SaveExcelDataDTO> dataExamples)
+        public void SaveDataToExcel(string filePath, List<ExtractedDataToSaveDTO> dataExamples)
         {
             // Criando um novo documento Excel
             using (var workbook = new XLWorkbook())

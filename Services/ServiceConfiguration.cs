@@ -1,8 +1,12 @@
 ﻿namespace TDGPGasReader.Services
 {
     using Microsoft.Extensions.DependencyInjection;
+    using TDGPGasReader.Model.DataManager;
+    using TDGPGasReader.Model.DataManager.Interfaces;
     using TDGPGasReader.Model.Excel;
     using TDGPGasReader.Model.Excel.interfaces;
+    using TDGPGasReader.Model.GasCalculator;
+    using TDGPGasReader.Model.GasCalculator.Interfaces;
     using TDGPGasReader.Model.Serial;
     using TDGPGasReader.Model.Serial.Interfaces;
     using TDGPGasReader.Presenter.DataManager;
@@ -34,7 +38,9 @@
         private static void ConfigureModels(IServiceCollection services)
         {
             services.AddSingleton<IExcelManagerModel, ExcelManagerModel>();
-            services.AddTransient<ISerialManagerModel, SerialManagerModel>();
+            services.AddSingleton<ISerialManagerModel, SerialManagerModel>();
+            services.AddSingleton<IDataManagerModel, DataManagerModel>();
+            services.AddSingleton<IGasCalculatorModel, GasCalculatorModel>();
         }
     }
 }

@@ -4,6 +4,6 @@ namespace TDGPGasReader.Model.Excel.interfaces
 {
     public interface IExcelManagerModel
     {
-        void SaveDataToExcel(string filePath, List<SaveExcelDataDTO> dataExamples);
+        void SaveDataToExcel(string filePath, List<ExtractedDataToSaveDTO> dataExamples);
     }
 }

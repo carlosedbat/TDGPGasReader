@@ -1,6 +1,6 @@
 ﻿namespace TDGPGasReader.DTOs.DataManager.UseCases.Save
 {
-    public class SaveExcelDataDTO
+    public class ExtractedDataToSaveDTO
     {
         public string MeasurementType { get; set; }
 
