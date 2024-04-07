@@ -2,12 +2,16 @@ namespace TDGPGasReader
 {
     using System.Globalization;
     using System.IO.Ports;
+    using TDGPGasReader.Presenter.MainForm.Interfaces;
+    using TDGPGasReader.Views.Main.Interfaces;
 
-    public partial class Form1 : Form
+    public partial class Form1 : Form, IForm1View
     {
+        private IMainFormPresenter _form1Presenter;
         private SerialPort serialPort1;
         private string dataBuffer = "";
         private bool started = false;
+        private List<string> dataRecords = new List<string>();
 
         public Form1()
         {
@@ -16,6 +20,10 @@ namespace TDGPGasReader
             SetSerialPort();
             InitializeSerialPort();
             PopulateSerialPortComboBox();
+        }
+        public void SetPresenter(IMainFormPresenter presenter)
+        {
+            _form1Presenter = presenter;
         }
 
         private void Form1_Load(object sender, EventArgs e)
