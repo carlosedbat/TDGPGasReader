@@ -2,6 +2,7 @@ namespace TDGPGasReader
 {
     using System.Globalization;
     using System.IO.Ports;
+    using TDGPGasReader.Enums;
     using TDGPGasReader.Presenter.MainForm.Interfaces;
     using TDGPGasReader.Views.Main.Interfaces;
 
@@ -9,9 +10,6 @@ namespace TDGPGasReader
     {
         private IMainFormPresenter _form1Presenter;
         private SerialPort serialPort1;
-        private string dataBuffer = "";
-        private bool started = false;
-        private List<string> dataRecords = new List<string>();
 
         public Form1()
         {
@@ -73,6 +71,34 @@ namespace TDGPGasReader
             }
         }
 
+        public void SetReadingStatus(EnumReadingStatus status)
+        {
+            if (labelReadingStatus.InvokeRequired)
+            {
+                labelReadingStatus.Invoke(new MethodInvoker(delegate
+                {
+                    labelReadingStatus.Text = status.ToString();
+                }));
+            }
+            else
+            {
+                labelReadingStatus.Text = status.ToString();
+            }
+        }
+        public void SetConnectionStatus(EnumConnectionStatus status)
+        {
+            if (labelConnectionStatus.InvokeRequired)
+            {
+                labelConnectionStatus.Invoke(new MethodInvoker(delegate
+                {
+                    labelConnectionStatus.Text = status.ToString();
+                }));
+            }
+            else
+            {
+                labelConnectionStatus.Text = status.ToString();
+            }
+        }
         //private void SerialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         //{
         //    dataBuffer += serialPort1.ReadExisting();  // Concatena os novos dados no buffer existente

@@ -1,4 +1,5 @@
-﻿using TDGPGasReader.Presenter.MainForm.Interfaces;
+﻿using TDGPGasReader.Enums;
+using TDGPGasReader.Presenter.MainForm.Interfaces;
 
 namespace TDGPGasReader.Views.Main.Interfaces
 {
@@ -25,5 +26,9 @@ namespace TDGPGasReader.Views.Main.Interfaces
         void SetATM(double atm);
 
         string ShowSaveFileDialog();
+
+        void SetConnectionStatus(EnumConnectionStatus status);
+
+        void SetReadingStatus(EnumReadingStatus status);
     }
 }

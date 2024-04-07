@@ -4,6 +4,7 @@
     using System.IO.Ports;
     using TDGPGasReader.Consts;
     using TDGPGasReader.DTOs.DataManager.UseCases.Save;
+    using TDGPGasReader.Enums;
     using TDGPGasReader.Model.DataManager.Interfaces;
     using TDGPGasReader.Model.Excel.interfaces;
     using TDGPGasReader.Presenter.MainForm.Interfaces;
@@ -76,6 +77,9 @@
                     serialPort1.PortName = serialPortCommunication;
                     serialPort1.Open();
 
+                    this._form1.SetConnectionStatus(EnumConnectionStatus.Conectado);
+                    this._form1.SetReadingStatus(EnumReadingStatus.Aguardando);
+
                     Task.Run(() => this.Aquisite());
                 } else
                 {
@@ -85,6 +89,8 @@
             }
             catch (Exception ex)
             {
+                this._form1.SetConnectionStatus(EnumConnectionStatus.Desconectado);
+                this._form1.SetReadingStatus(EnumReadingStatus.Desconectado);
                 this._form1.ShowErrorMessage("Erro ao abrir a porta serial: " + ex.Message);
             }
         }
@@ -96,10 +102,12 @@
                 if (!this.started)
                 {
                     this.started = true;
+                    this._form1.SetReadingStatus(EnumReadingStatus.Lendo);
                 }
             } catch (Exception ex)
             {
                 this.started = false;
+                this._form1.SetReadingStatus(EnumReadingStatus.Aguardando);
                 this._form1.ShowErrorMessage(ex.Message);
             }
         }
@@ -120,6 +128,7 @@
             }
             catch (Exception ex)
             {
+                this._form1.SetReadingStatus(EnumReadingStatus.Aguardando);
                 this._form1.ShowErrorMessage(ex.Message);
             }
             finally
@@ -133,6 +142,7 @@
             if (this.started)
             {
                 this.started = false;
+                this._form1.SetReadingStatus(EnumReadingStatus.Aguardando);
 
                 if (this._extractedDataToSave.Any())
                 {
@@ -148,6 +158,8 @@
         public void CloseSerialCommunication()
         {
             serialPort1.Close();
+            this._form1.SetConnectionStatus(EnumConnectionStatus.Desconectado);
+            this._form1.SetReadingStatus(EnumReadingStatus.Desconectado);
         }
 
         private void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
