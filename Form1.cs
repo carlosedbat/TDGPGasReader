@@ -153,6 +153,7 @@ namespace TDGPGasReader
                 double convertedN2Pressure = this.SetN2Concentration(atm);
                 double nitrogenMass = this.SetNitrogenMass(convertedN2Pressure);
                 double n2Percentual = this.SetN2Percentual(nitrogenMass);
+                this.SetTemperature(temperature);
 
                 // Exibe ou utiliza as variáveis
                 Console.WriteLine($"Measurement Type: {measurementType}");
@@ -237,7 +238,7 @@ namespace TDGPGasReader
             double constant = 0.000258;
             double n2Percentual = 1 - ((nitrogenMass - constant) / constant);
 
-            string n2PercentualStringed = (n2Percentual * 100).ToString("F5") + '%';
+            string n2PercentualStringed = (n2Percentual * 100).ToString("F2") + '%';
 
             if (labelPorcentagemN2.InvokeRequired)
             {
@@ -254,6 +255,21 @@ namespace TDGPGasReader
             return n2Percentual;
         }
 
+        public void SetTemperature(double temperature)
+        {
+            if (labelTemperature.InvokeRequired)
+            {
+                labelTemperature.Invoke(new MethodInvoker(delegate
+                {
+                    labelTemperature.Text = temperature.ToString();
+                }));
+            }
+            else
+            {
+                labelTemperature.Text = temperature.ToString() + " °C";
+            }
+        }
+
         private void buttonStart_Click(object sender, EventArgs e)
         {
             this.started = true;
@@ -262,6 +278,21 @@ namespace TDGPGasReader
         private void buttonStop_Click(object sender, EventArgs e)
         {
             this.started = false;
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

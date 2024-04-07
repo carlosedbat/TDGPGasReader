@@ -59,6 +59,9 @@
             labelReadingStatus = new Label();
             labelConnectionStatus = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
+            panel3 = new Panel();
+            labelTemperature = new Label();
+            label9 = new Label();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource2).BeginInit();
             panel1.SuspendLayout();
@@ -69,6 +72,7 @@
             panel5.SuspendLayout();
             panel4.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // txtTerminal
@@ -83,8 +87,7 @@
             // 
             // txtCommand
             // 
-            txtCommand.Enabled = false;
-            txtCommand.Location = new Point(23, 534);
+            txtCommand.Location = new Point(23, 437);
             txtCommand.Name = "txtCommand";
             txtCommand.Size = new Size(161, 23);
             txtCommand.TabIndex = 1;
@@ -110,7 +113,6 @@
             // btnSend
             // 
             btnSend.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSend.Enabled = false;
             btnSend.Location = new Point(23, 406);
             btnSend.Name = "btnSend";
             btnSend.Size = new Size(161, 25);
@@ -123,7 +125,7 @@
             labelATM.Anchor = AnchorStyles.Bottom;
             labelATM.AutoSize = true;
             labelATM.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            labelATM.Location = new Point(46, 32);
+            labelATM.Location = new Point(29, 14);
             labelATM.Name = "labelATM";
             labelATM.Size = new Size(91, 30);
             labelATM.TabIndex = 9;
@@ -134,7 +136,7 @@
             labelConcentracaoN2.Anchor = AnchorStyles.Bottom;
             labelConcentracaoN2.AutoSize = true;
             labelConcentracaoN2.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            labelConcentracaoN2.Location = new Point(39, 29);
+            labelConcentracaoN2.Location = new Point(30, 14);
             labelConcentracaoN2.Name = "labelConcentracaoN2";
             labelConcentracaoN2.Size = new Size(91, 30);
             labelConcentracaoN2.TabIndex = 10;
@@ -145,7 +147,7 @@
             labelMassaDeNitrogenio.Anchor = AnchorStyles.Bottom;
             labelMassaDeNitrogenio.AutoSize = true;
             labelMassaDeNitrogenio.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            labelMassaDeNitrogenio.Location = new Point(47, 29);
+            labelMassaDeNitrogenio.Location = new Point(26, 15);
             labelMassaDeNitrogenio.Name = "labelMassaDeNitrogenio";
             labelMassaDeNitrogenio.Size = new Size(91, 30);
             labelMassaDeNitrogenio.TabIndex = 11;
@@ -156,7 +158,7 @@
             labelPorcentagemN2.Anchor = AnchorStyles.Bottom;
             labelPorcentagemN2.AutoSize = true;
             labelPorcentagemN2.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
-            labelPorcentagemN2.Location = new Point(42, 29);
+            labelPorcentagemN2.Location = new Point(12, 15);
             labelPorcentagemN2.Name = "labelPorcentagemN2";
             labelPorcentagemN2.Size = new Size(119, 32);
             labelPorcentagemN2.TabIndex = 12;
@@ -186,14 +188,15 @@
             // label1
             // 
             label1.Anchor = AnchorStyles.Bottom;
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label1.ForeColor = Color.Teal;
-            label1.Location = new Point(5, 68);
+            label1.Location = new Point(3, 37);
             label1.Name = "label1";
-            label1.Size = new Size(167, 21);
+            label1.Size = new Size(135, 43);
             label1.TabIndex = 12;
             label1.Text = "Concentração de N2";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel1
             // 
@@ -201,9 +204,9 @@
             panel1.Controls.Add(label1);
             panel1.Controls.Add(labelConcentracaoN2);
             panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(187, 3);
+            panel1.Location = new Point(150, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(178, 94);
+            panel1.Size = new Size(141, 80);
             panel1.TabIndex = 13;
             // 
             // panel2
@@ -247,10 +250,11 @@
             panel7.Controls.Add(labelPorcentagemN2);
             panel7.Controls.Add(label7);
             panel7.Dock = DockStyle.Fill;
-            panel7.Location = new Point(555, 3);
+            panel7.Location = new Point(444, 3);
             panel7.Name = "panel7";
-            panel7.Size = new Size(180, 94);
+            panel7.Size = new Size(141, 80);
             panel7.TabIndex = 19;
+            panel7.Paint += panel7_Paint;
             // 
             // label7
             // 
@@ -258,7 +262,7 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label7.ForeColor = Color.Teal;
-            label7.Location = new Point(52, 66);
+            label7.Location = new Point(26, 47);
             label7.Name = "label7";
             label7.Size = new Size(85, 21);
             label7.TabIndex = 13;
@@ -270,22 +274,23 @@
             panel6.Controls.Add(label6);
             panel6.Controls.Add(labelMassaDeNitrogenio);
             panel6.Dock = DockStyle.Fill;
-            panel6.Location = new Point(371, 3);
+            panel6.Location = new Point(297, 3);
             panel6.Name = "panel6";
-            panel6.Size = new Size(178, 94);
+            panel6.Size = new Size(141, 80);
             panel6.TabIndex = 18;
             // 
             // label6
             // 
             label6.Anchor = AnchorStyles.Bottom;
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI Black", 11.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label6.ForeColor = Color.Teal;
-            label6.Location = new Point(9, 68);
+            label6.Location = new Point(5, 40);
             label6.Name = "label6";
-            label6.Size = new Size(162, 20);
+            label6.Size = new Size(133, 37);
             label6.TabIndex = 13;
             label6.Text = "Massa de Nitrogênio";
+            label6.TextAlign = ContentAlignment.MiddleCenter;
+            label6.Click += label6_Click;
             // 
             // panel5
             // 
@@ -295,7 +300,7 @@
             panel5.Dock = DockStyle.Fill;
             panel5.Location = new Point(3, 3);
             panel5.Name = "panel5";
-            panel5.Size = new Size(178, 94);
+            panel5.Size = new Size(141, 80);
             panel5.TabIndex = 17;
             // 
             // label5
@@ -304,7 +309,7 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point);
             label5.ForeColor = Color.Teal;
-            label5.Location = new Point(65, 66);
+            label5.Location = new Point(46, 48);
             label5.Name = "label5";
             label5.Size = new Size(48, 21);
             label5.TabIndex = 13;
@@ -361,11 +366,13 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.BackColor = Color.Gray;
-            tableLayoutPanel1.ColumnCount = 4;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnCount = 5;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel1.Controls.Add(panel3, 4, 0);
             tableLayoutPanel1.Controls.Add(panel5, 0, 0);
             tableLayoutPanel1.Controls.Add(panel7, 3, 0);
             tableLayoutPanel1.Controls.Add(panel6, 2, 0);
@@ -375,8 +382,43 @@
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(738, 100);
+            tableLayoutPanel1.Size = new Size(738, 86);
             tableLayoutPanel1.TabIndex = 17;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = Color.White;
+            panel3.Controls.Add(labelTemperature);
+            panel3.Controls.Add(label9);
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(591, 3);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(144, 80);
+            panel3.TabIndex = 20;
+            // 
+            // labelTemperature
+            // 
+            labelTemperature.Anchor = AnchorStyles.Bottom;
+            labelTemperature.AutoSize = true;
+            labelTemperature.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            labelTemperature.Location = new Point(21, 18);
+            labelTemperature.Name = "labelTemperature";
+            labelTemperature.Size = new Size(108, 32);
+            labelTemperature.TabIndex = 12;
+            labelTemperature.Text = "00.00 C°";
+            // 
+            // label9
+            // 
+            label9.Anchor = AnchorStyles.Bottom;
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.ForeColor = Color.Teal;
+            label9.Location = new Point(17, 47);
+            label9.Name = "label9";
+            label9.Size = new Size(112, 21);
+            label9.TabIndex = 13;
+            label9.Text = "Temperatura";
+            label9.Click += label9_Click;
             // 
             // Form1
             // 
@@ -406,6 +448,8 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -442,5 +486,8 @@
         private Panel panel6;
         private Label label6;
         private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel3;
+        private Label labelTemperature;
+        private Label label9;
     }
 }
