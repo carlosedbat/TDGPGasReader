@@ -103,6 +103,7 @@
                 {
                     this.started = true;
                     this._form1.SetReadingStatus(EnumReadingStatus.Lendo);
+                    this._form1.LimparGrafico();
                 }
             } catch (Exception ex)
             {
@@ -121,6 +122,8 @@
                     if (this.started)
                     {
                         this._extractedDataToSave.Add(this._extractedData);
+                        this._form1.AddTdgOnGraph(this._extractedData.Timestamp, this._extractedData.TdgPercentual);
+                        this._form1.AddTemperatureOnGraph(this._extractedData.Timestamp, this._extractedData.SensorTemperature);
                         await Task.Delay(TimeIntervals.OneMinutInMiliSeconds);
                     }
                 }

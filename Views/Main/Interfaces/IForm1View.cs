@@ -30,5 +30,11 @@ namespace TDGPGasReader.Views.Main.Interfaces
         void SetConnectionStatus(EnumConnectionStatus status);
 
         void SetReadingStatus(EnumReadingStatus status);
+
+        void AddTemperatureOnGraph(DateTime xAxys, double yAxys);
+
+        void AddTdgOnGraph(DateTime xAxys, double yAxys);
+
+        public void LimparGrafico();
     }
 }

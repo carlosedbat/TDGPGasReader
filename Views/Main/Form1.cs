@@ -1,7 +1,7 @@
 namespace TDGPGasReader
 {
-    using System.Globalization;
     using System.IO.Ports;
+    using System.Windows.Forms.DataVisualization.Charting;
     using TDGPGasReader.Enums;
     using TDGPGasReader.Presenter.MainForm.Interfaces;
     using TDGPGasReader.Views.Main.Interfaces;
@@ -10,11 +10,14 @@ namespace TDGPGasReader
     {
         private IMainFormPresenter _form1Presenter;
         private SerialPort serialPort1;
+        private Series _seriesTemperature;
+        private Series _seriesTdg;
 
         public Form1()
         {
             InitializeComponent();
             serialPort1 = new SerialPort(components);
+            this.ConfigureGraph();
         }
         public void SetPresenter(IMainFormPresenter presenter)
         {
@@ -99,71 +102,7 @@ namespace TDGPGasReader
                 labelConnectionStatus.Text = status.ToString();
             }
         }
-        //private void SerialPort1_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
-        //{
-        //    dataBuffer += serialPort1.ReadExisting();  // Concatena os novos dados no buffer existente
-        //    if (dataBuffer.Contains("\n"))  // Verifica se existe uma nova linha completa
-        //    {
-        //        // Separa as linhas no buffer
-        //        var lines = dataBuffer.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-        //        string lastCompleteLine = lines.Last();  // Pega a última linha completa
-        //        dataBuffer = "";  // Limpa o buffer
-
-        //        if (this.started)
-        //        {
-        //            this.ParseDataToValues(lastCompleteLine);  // Processa a última linha completa
-
-        //        }
-        //        Invoke(new MethodInvoker(delegate
-        //        {
-        //            txtTerminal.AppendText(lastCompleteLine + Environment.NewLine);  // Atualiza o terminal com a última linha
-        //        }));
-        //    }
-        //}
-
-        //private int SafeParseInt(string input)
-        //{
-        //    return int.TryParse(input, out int result) ? result : 0;
-        //}
-
-        //private double SafeParseDouble(string input)
-        //{
-        //    // Tenta converter usando a cultura en-US que usa o ponto como separador decimal
-        //    bool success = double.TryParse(input, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out double result);
-        //    return success ? result : 0.0;
-        //}
-
-        //public void ParseDataToValues(string data)
-        //{
-        //    try
-        //    {
-        //        // Remove o espaço inicial antes de dividir, se existir.
-        //        data = data.Trim();
-
-        //        // Divide a string em partes usando a vírgula como separador
-        //        string[] parts = data.Split(',');
-
-        //        // Extrai cada parte para a variável correspondente
-        //        string measurementType = parts[0].Substring(0, 1);  // Obtém o 'P'
-        //        int year = SafeParseInt(parts[0].Substring(2));     // Converte para inteiro o ano, que começa na posição 2 da primeira parte
-        //        int month = SafeParseInt(parts[1]);
-        //        int day = SafeParseInt(parts[2]);
-        //        int hour = SafeParseInt(parts[3]);
-        //        int minute = SafeParseInt(parts[4]);
-        //        int second = SafeParseInt(parts[5]);
-        //        double temperature = SafeParseDouble(parts[6]);
-        //        double pressure = SafeParseDouble(parts[7]);
-        //        double supplyVoltage = SafeParseDouble(parts[8]);
-
-        //        double atm = this.SetATM(pressure);
-        //        double convertedN2Pressure = this.SetN2Concentration(atm);
-        //        double nitrogenMass = this.SetNitrogenMass(convertedN2Pressure);
-        //        double n2Percentual = this.SetN2Percentual(nitrogenMass);
-        //        this.SetTemperature(temperature);
-        //    }
-        //    catch (Exception e) { Console.WriteLine(e.ToString()); }
-
-        //}
+        
         public void ShowErrorMessage(string message)
         {
             MessageBox.Show(message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -296,6 +235,87 @@ namespace TDGPGasReader
             {
                 txtTerminal.AppendText(stringedDataToTerminal + Environment.NewLine);  // Atualiza o terminal com a última linha
             }));
+        }
+
+        private void ConfigureGraph()
+        {
+            // Acessar a série de Temperatura e modificar propriedades
+            Series seriesTemperature = this.chart1.Series["Temperatura"];
+            if (seriesTemperature != null)
+            {
+                seriesTemperature.ChartType = SeriesChartType.Line;
+                seriesTemperature.BorderWidth = 2;
+                seriesTemperature.Color = Color.Aquamarine;
+                seriesTemperature.YAxisType = AxisType.Secondary; // Configura para usar o eixo Y secundário
+            }
+
+            // Acessar a série de TDG e modificar propriedades
+            Series seriesTDG = this.chart1.Series["TDG"];
+            if (seriesTDG != null)
+            {
+                seriesTDG.ChartType = SeriesChartType.Line;
+                seriesTDG.BorderWidth = 2;
+                seriesTDG.Color = Color.Blue;
+                seriesTDG.YAxisType = AxisType.Primary; // Configura para usar o eixo Y primário
+            }
+
+            // Verificar se uma ChartArea já existe, se não, adicioná-la
+            if (this.chart1.ChartAreas.Count == 0)
+            {
+                ChartArea chartArea = new ChartArea();
+                this.chart1.ChartAreas.Add(chartArea);
+                chartArea.AxisY2.Enabled = AxisEnabled.True; // Habilita o eixo Y2
+                chartArea.AxisX.Title = "Tempo";  // Título do eixo X
+                chartArea.AxisY.Title = "TDG";  // Título do eixo Y (para TDG)
+                chartArea.AxisY2.Title = "Temperatura";  // Título do eixo Y2 (para Temperatura)
+            }
+        }
+
+
+        public void LimparGrafico()
+        {
+            // Verifica se a operação de limpeza precisa ser feita na thread da UI
+            if (this.chart1.InvokeRequired)
+            {
+                this.chart1.Invoke(new MethodInvoker(() =>
+                {
+                    ClearAndConfigureGraph();
+                }));
+            }
+            else
+            {
+                ClearAndConfigureGraph();
+            }
+        }
+
+        private void ClearAndConfigureGraph()
+        {
+            this.chart1.Series.Clear();  // Limpa todas as séries do gráfico
+            this.ConfigureGraph();       // Reconfigura o gráfico adicionando as séries de volta
+        }
+
+        public void AddTemperatureOnGraph(DateTime xAxys, double yAxys)
+        {
+            Action addPointAction = () => this._seriesTemperature.Points.AddXY(xAxys, yAxys);
+            ModifyGraph(addPointAction);
+        }
+
+        public void AddTdgOnGraph(DateTime xAxys, double yAxys)
+        {
+            Action addPointAction = () => this._seriesTdg.Points.AddXY(xAxys, yAxys);
+            ModifyGraph(addPointAction);
+        }
+
+        private void ModifyGraph(Action graphModificationAction)
+        {
+            if (this.chart1.InvokeRequired)
+            {
+                this.chart1.Invoke(new MethodInvoker(graphModificationAction));
+            }
+            else
+            {
+                graphModificationAction.Invoke();
+            }
         }
     }
 }

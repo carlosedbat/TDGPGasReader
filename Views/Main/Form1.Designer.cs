@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             bindingSource1 = new BindingSource(components);
             bindingSource2 = new BindingSource(components);
             txtTerminal = new TextBox();
@@ -62,6 +66,8 @@
             panel3 = new Panel();
             labelTemperature = new Label();
             label9 = new Label();
+            panel8 = new Panel();
+            chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource2).BeginInit();
             panel1.SuspendLayout();
@@ -73,6 +79,8 @@
             panel4.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             panel3.SuspendLayout();
+            panel8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
             // 
             // txtTerminal
@@ -421,11 +429,52 @@
             label9.Text = "Temperatura";
             label9.Click += label9_Click;
             // 
+            // panel8
+            // 
+            panel8.Controls.Add(chart1);
+            panel8.Dock = DockStyle.Fill;
+            panel8.Location = new Point(200, 86);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(738, 351);
+            panel8.TabIndex = 18;
+            // 
+            // chart1
+            // 
+            chart1.Anchor = AnchorStyles.Bottom;
+            chartArea1.AxisX.Title = "Tempo";
+            chartArea1.AxisY.Title = "TDG";
+            chartArea1.AxisY2.Title = "Temperatura";
+            chartArea1.Name = "ChartArea1";
+            chart1.ChartAreas.Add(chartArea1);
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            legend1.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
+            legend1.IsTextAutoFit = false;
+            legend1.Name = "Legend1";
+            chart1.Legends.Add(legend1);
+            chart1.Location = new Point(0, 0);
+            chart1.Name = "chart1";
+            chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Temperatura";
+            series1.YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "TDG";
+            chart1.Series.Add(series1);
+            chart1.Series.Add(series2);
+            chart1.Size = new Size(738, 351);
+            chart1.TabIndex = 0;
+            chart1.Text = "chart1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(938, 569);
+            Controls.Add(panel8);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panel4);
             Controls.Add(panel2);
@@ -451,6 +500,8 @@
             tableLayoutPanel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            panel8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -490,5 +541,7 @@
         private Panel panel3;
         private Label labelTemperature;
         private Label label9;
+        private Panel panel8;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
     }
 }
