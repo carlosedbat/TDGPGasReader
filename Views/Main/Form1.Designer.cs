@@ -49,6 +49,9 @@
             label1 = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
+            button3 = new Button();
+            button2 = new Button();
+            button1 = new Button();
             label2 = new Label();
             pictureBox1 = new PictureBox();
             panel7 = new Panel();
@@ -86,16 +89,17 @@
             // txtTerminal
             // 
             txtTerminal.Dock = DockStyle.Bottom;
-            txtTerminal.Location = new Point(0, 472);
+            txtTerminal.Location = new Point(0, 469);
             txtTerminal.Multiline = true;
             txtTerminal.Name = "txtTerminal";
             txtTerminal.ScrollBars = ScrollBars.Vertical;
-            txtTerminal.Size = new Size(938, 97);
+            txtTerminal.Size = new Size(938, 251);
             txtTerminal.TabIndex = 0;
             // 
             // txtCommand
             // 
-            txtCommand.Location = new Point(23, 437);
+            txtCommand.Anchor = AnchorStyles.Bottom;
+            txtCommand.Location = new Point(23, 423);
             txtCommand.Name = "txtCommand";
             txtCommand.Size = new Size(161, 23);
             txtCommand.TabIndex = 1;
@@ -121,12 +125,13 @@
             // btnSend
             // 
             btnSend.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSend.Location = new Point(23, 406);
+            btnSend.Location = new Point(23, 392);
             btnSend.Name = "btnSend";
             btnSend.Size = new Size(161, 25);
             btnSend.TabIndex = 4;
             btnSend.Text = "Enviar";
             btnSend.UseVisualStyleBackColor = true;
+            btnSend.Click += btnSend_Click_1;
             // 
             // labelATM
             // 
@@ -220,6 +225,9 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(0, 192, 192);
+            panel2.Controls.Add(button3);
+            panel2.Controls.Add(button2);
+            panel2.Controls.Add(button1);
             panel2.Controls.Add(label2);
             panel2.Controls.Add(pictureBox1);
             panel2.Controls.Add(buttonStop);
@@ -231,8 +239,41 @@
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(200, 472);
+            panel2.Size = new Size(200, 469);
             panel2.TabIndex = 14;
+            // 
+            // button3
+            // 
+            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button3.Location = new Point(23, 364);
+            button3.Name = "button3";
+            button3.Size = new Size(161, 25);
+            button3.TabIndex = 13;
+            button3.Text = "Enviar .";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button2
+            // 
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button2.Location = new Point(23, 333);
+            button2.Name = "button2";
+            button2.Size = new Size(161, 25);
+            button2.TabIndex = 12;
+            button2.Text = "Enviar 2";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button1
+            // 
+            button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button1.Location = new Point(23, 302);
+            button1.Name = "button1";
+            button1.Size = new Size(161, 25);
+            button1.TabIndex = 11;
+            button1.Text = "Enviar 1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // label2
             // 
@@ -331,7 +372,7 @@
             panel4.Controls.Add(labelReadingStatus);
             panel4.Controls.Add(labelConnectionStatus);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(200, 437);
+            panel4.Location = new Point(200, 434);
             panel4.Name = "panel4";
             panel4.Size = new Size(738, 35);
             panel4.TabIndex = 16;
@@ -435,7 +476,7 @@
             panel8.Dock = DockStyle.Fill;
             panel8.Location = new Point(200, 86);
             panel8.Name = "panel8";
-            panel8.Size = new Size(738, 351);
+            panel8.Size = new Size(738, 348);
             panel8.TabIndex = 18;
             // 
             // chart1
@@ -451,7 +492,7 @@
             legend1.IsTextAutoFit = false;
             legend1.Name = "Legend1";
             chart1.Legends.Add(legend1);
-            chart1.Location = new Point(0, 0);
+            chart1.Location = new Point(0, -3);
             chart1.Name = "chart1";
             chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
             series1.ChartArea = "ChartArea1";
@@ -473,7 +514,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(938, 569);
+            ClientSize = new Size(938, 720);
             Controls.Add(panel8);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panel4);
@@ -543,5 +584,8 @@
         private Label label9;
         private Panel panel8;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private Button button3;
+        private Button button2;
+        private Button button1;
     }
 }

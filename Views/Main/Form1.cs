@@ -1,6 +1,7 @@
 namespace TDGPGasReader
 {
     using System.IO.Ports;
+    using System.Linq;
     using System.Windows.Forms.DataVisualization.Charting;
     using TDGPGasReader.Enums;
     using TDGPGasReader.Presenter.MainForm.Interfaces;
@@ -102,7 +103,7 @@ namespace TDGPGasReader
                 labelConnectionStatus.Text = status.ToString();
             }
         }
-        
+
         public void ShowErrorMessage(string message)
         {
             MessageBox.Show(message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -239,37 +240,87 @@ namespace TDGPGasReader
 
         private void ConfigureGraph()
         {
-            // Acessar a série de Temperatura e modificar propriedades
-            Series seriesTemperature = this.chart1.Series["Temperatura"];
-            if (seriesTemperature != null)
+            // Verifica e cria a série de Temperatura se necessário
+            if (this.chart1.Series.IndexOf("Temperatura") == -1)
             {
-                seriesTemperature.ChartType = SeriesChartType.Line;
-                seriesTemperature.BorderWidth = 2;
-                seriesTemperature.Color = Color.Aquamarine;
-                seriesTemperature.YAxisType = AxisType.Secondary; // Configura para usar o eixo Y secundário
+                this._seriesTemperature = new Series("Temperatura")
+                {
+                    ChartType = SeriesChartType.Line,
+                    BorderWidth = 2,
+                    Color = Color.Aquamarine,
+                    YAxisType = AxisType.Secondary
+                };
+                this.chart1.Series.Add(this._seriesTemperature);
+            }
+            else
+            {
+                this._seriesTemperature = this.chart1.Series["Temperatura"];
             }
 
-            // Acessar a série de TDG e modificar propriedades
-            Series seriesTDG = this.chart1.Series["TDG"];
-            if (seriesTDG != null)
+            // Verifica e cria a série de TDG se necessário
+            if (this.chart1.Series.IndexOf("TDG") == -1)
             {
-                seriesTDG.ChartType = SeriesChartType.Line;
-                seriesTDG.BorderWidth = 2;
-                seriesTDG.Color = Color.Blue;
-                seriesTDG.YAxisType = AxisType.Primary; // Configura para usar o eixo Y primário
+                this._seriesTdg = new Series("TDG")
+                {
+                    ChartType = SeriesChartType.Line,
+                    BorderWidth = 2,
+                    Color = Color.Blue,
+                    YAxisType = AxisType.Primary
+                };
+                this.chart1.Series.Add(this._seriesTdg);
+            }
+            else
+            {
+                this._seriesTdg = this.chart1.Series["TDG"];
             }
 
-            // Verificar se uma ChartArea já existe, se não, adicioná-la
+            // Configura a área do gráfico, se ainda não estiver configurada
             if (this.chart1.ChartAreas.Count == 0)
             {
-                ChartArea chartArea = new ChartArea();
+                var chartArea = new ChartArea();
                 this.chart1.ChartAreas.Add(chartArea);
-                chartArea.AxisY2.Enabled = AxisEnabled.True; // Habilita o eixo Y2
-                chartArea.AxisX.Title = "Tempo";  // Título do eixo X
-                chartArea.AxisY.Title = "TDG";  // Título do eixo Y (para TDG)
-                chartArea.AxisY2.Title = "Temperatura";  // Título do eixo Y2 (para Temperatura)
+                chartArea.AxisY2.Enabled = AxisEnabled.True;
+                chartArea.AxisX.Title = "Tempo";
+                chartArea.AxisY.Title = "TDG";
+                chartArea.AxisY2.Title = "Temperatura";
+
+                // Configurações de linhas de grade
+                chartArea.AxisX.MajorGrid.Enabled = false; // Desabilita as linhas de grade principais do eixo X
+                chartArea.AxisY.MajorGrid.Enabled = false; // Desabilita as linhas de grade principais do eixo Y
+                chartArea.AxisY2.MajorGrid.Enabled = false; // Desabilita as linhas de grade principais do eixo Y2
+
+                // Formatar a data para mostrar apenas os minutos
+                chartArea.AxisX.LabelStyle.Format = "hh:mm"; // Formato de hora e minuto
+                chartArea.AxisX.IntervalType = DateTimeIntervalType.Minutes;
+                chartArea.AxisX.Interval = 1;
+            }
+
+            if (this.chart1.ChartAreas.Count > 0)
+            {
+                var chartArea = this.chart1.ChartAreas[0];
+
+                // Remover linhas de grade horizontais e verticais do eixo X e Y
+                chartArea.AxisX.MajorGrid.Enabled = false;
+                chartArea.AxisX.MinorGrid.Enabled = false;
+                chartArea.AxisY.MajorGrid.Enabled = false;
+                chartArea.AxisY.MinorGrid.Enabled = false;
+
+                // Se você também quiser remover as linhas de grade do eixo Y secundário (Y2)
+                chartArea.AxisY2.MajorGrid.Enabled = false;
+                chartArea.AxisY2.MinorGrid.Enabled = false;
+
+                // Formatar a data para mostrar apenas os minutos ou conforme necessário
+                // Isso dependerá do tipo de valor que você está passando para o eixo X
+                // Se estiver passando DateTime, você pode formatar como abaixo
+                chartArea.AxisX.LabelStyle.Format = "hh:mm"; // Mostra apenas horas e minutos
+                                                          // Se estiver passando um valor numérico, talvez você queira ajustar o formato ou a propriedade Interval
+                chartArea.AxisX.IntervalType = DateTimeIntervalType.Minutes;
+                chartArea.AxisX.Interval = 1;
             }
         }
+
+
+
 
 
         public void LimparGrafico()
@@ -316,6 +367,26 @@ namespace TDGPGasReader
             {
                 graphModificationAction.Invoke();
             }
+        }
+
+        private void btnSend_Click_1(object sender, EventArgs e)
+        {
+            this._form1Presenter.EnviarComandoBin(this.txtCommand.Text);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this._form1Presenter.Enviar1();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this._form1Presenter.Enviar2();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this._form1Presenter.EnviarPoint();
         }
     }
 }

@@ -18,5 +18,13 @@ namespace TDGPGasReader.Presenter.MainForm.Interfaces
         void StartAquisition();
 
         void StopAquisition();
+
+        public void EnviarComandoBin(string comando);
+
+        public void Enviar1();
+
+        public void Enviar2();
+
+        public void EnviarPoint();
     }
 }
