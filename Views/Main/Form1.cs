@@ -1,7 +1,6 @@
 namespace TDGPGasReader
 {
     using System.IO.Ports;
-    using System.Linq;
     using System.Windows.Forms.DataVisualization.Charting;
     using TDGPGasReader.Enums;
     using TDGPGasReader.Presenter.MainForm.Interfaces;
@@ -48,17 +47,32 @@ namespace TDGPGasReader
                 if (this._form1Presenter.CheckSerialPortIsOpen())
                 {
                     this._form1Presenter.CloseSerialCommunication();
-                    btnConnect.Text = "Connect";
+                    //btnConnect.Text = "Connect";
                 }
                 else
                 {
                     this._form1Presenter.OpenSerialCommunication(this.cmbSerialPort.SelectedItem.ToString());
-                    btnConnect.Text = "Disconnect";
+                    //btnConnect.Text = "Disconnect";
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void SetButomConnect(EnumConnectionButom butom)
+        {
+            if (btnConnect.InvokeRequired)
+            {
+                btnConnect.Invoke(new MethodInvoker(delegate
+                {
+                    btnConnect.Text = butom.ToString();
+                }));
+            }
+            else
+            {
+                btnConnect.Text = butom.ToString();
             }
         }
 
@@ -205,6 +219,8 @@ namespace TDGPGasReader
             }
         }
 
+
+
         private void buttonStart_Click(object sender, EventArgs e)
         {
             this._form1Presenter.StartAquisition();
@@ -313,15 +329,11 @@ namespace TDGPGasReader
                 // Isso dependerá do tipo de valor que você está passando para o eixo X
                 // Se estiver passando DateTime, você pode formatar como abaixo
                 chartArea.AxisX.LabelStyle.Format = "hh:mm"; // Mostra apenas horas e minutos
-                                                          // Se estiver passando um valor numérico, talvez você queira ajustar o formato ou a propriedade Interval
+                                                             // Se estiver passando um valor numérico, talvez você queira ajustar o formato ou a propriedade Interval
                 chartArea.AxisX.IntervalType = DateTimeIntervalType.Minutes;
                 chartArea.AxisX.Interval = 1;
             }
         }
-
-
-
-
 
         public void LimparGrafico()
         {
@@ -387,6 +399,16 @@ namespace TDGPGasReader
         private void button3_Click(object sender, EventArgs e)
         {
             this._form1Presenter.EnviarPoint();
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private async void buttonSimulator_Click(object sender, EventArgs e)
+        {
+            await this._form1Presenter.Simulate();
         }
     }
 }

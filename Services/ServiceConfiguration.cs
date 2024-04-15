@@ -7,6 +7,9 @@
     using TDGPGasReader.Model.Excel.interfaces;
     using TDGPGasReader.Model.GasCalculator;
     using TDGPGasReader.Model.GasCalculator.Interfaces;
+    using TDGPGasReader.Model.HenryLawConstants;
+    using TDGPGasReader.Model.HenryLawConstants.Interfaces;
+    using TDGPGasReader.Model.HenryLawConstants.UseCases.SaturacoesDosGases;
     using TDGPGasReader.Model.Serial;
     using TDGPGasReader.Model.Serial.Interfaces;
     using TDGPGasReader.Presenter.DataManager;
@@ -41,6 +44,8 @@
             services.AddSingleton<ISerialManagerModel, SerialManagerModel>();
             services.AddSingleton<IDataManagerModel, DataManagerModel>();
             services.AddSingleton<IGasCalculatorModel, GasCalculatorModel>();
+            services.AddSingleton<IHenryLawConstantsModel, HenryLawConstantsModel>();
+            services.AddSingleton<IGasSaturationModule, GasSaturationModule>();
         }
     }
 }

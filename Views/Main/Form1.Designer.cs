@@ -33,6 +33,7 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             bindingSource1 = new BindingSource(components);
             bindingSource2 = new BindingSource(components);
             txtTerminal = new TextBox();
@@ -71,6 +72,7 @@
             label9 = new Label();
             panel8 = new Panel();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            buttonSimulator = new Button();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource2).BeginInit();
             panel1.SuspendLayout();
@@ -89,20 +91,22 @@
             // txtTerminal
             // 
             txtTerminal.Dock = DockStyle.Bottom;
-            txtTerminal.Location = new Point(0, 469);
+            txtTerminal.Location = new Point(0, 501);
             txtTerminal.Multiline = true;
             txtTerminal.Name = "txtTerminal";
             txtTerminal.ScrollBars = ScrollBars.Vertical;
-            txtTerminal.Size = new Size(938, 251);
+            txtTerminal.Size = new Size(938, 120);
             txtTerminal.TabIndex = 0;
             // 
             // txtCommand
             // 
             txtCommand.Anchor = AnchorStyles.Bottom;
-            txtCommand.Location = new Point(23, 423);
+            txtCommand.Location = new Point(12, 455);
             txtCommand.Name = "txtCommand";
-            txtCommand.Size = new Size(161, 23);
+            txtCommand.Size = new Size(174, 23);
             txtCommand.TabIndex = 1;
+            txtCommand.Visible = false;
+            txtCommand.WordWrap = false;
             // 
             // btnConnect
             // 
@@ -125,12 +129,13 @@
             // btnSend
             // 
             btnSend.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSend.Location = new Point(23, 392);
+            btnSend.Location = new Point(12, 424);
             btnSend.Name = "btnSend";
-            btnSend.Size = new Size(161, 25);
+            btnSend.Size = new Size(104, 25);
             btnSend.TabIndex = 4;
-            btnSend.Text = "Enviar";
+            btnSend.Text = "Enviar Comando";
             btnSend.UseVisualStyleBackColor = true;
+            btnSend.Visible = false;
             btnSend.Click += btnSend_Click_1;
             // 
             // labelATM
@@ -149,7 +154,7 @@
             labelConcentracaoN2.Anchor = AnchorStyles.Bottom;
             labelConcentracaoN2.AutoSize = true;
             labelConcentracaoN2.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            labelConcentracaoN2.Location = new Point(30, 14);
+            labelConcentracaoN2.Location = new Point(30, 15);
             labelConcentracaoN2.Name = "labelConcentracaoN2";
             labelConcentracaoN2.Size = new Size(91, 30);
             labelConcentracaoN2.TabIndex = 10;
@@ -204,9 +209,9 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label1.ForeColor = Color.Teal;
-            label1.Location = new Point(3, 37);
+            label1.Location = new Point(3, 43);
             label1.Name = "label1";
-            label1.Size = new Size(135, 43);
+            label1.Size = new Size(135, 37);
             label1.TabIndex = 12;
             label1.Text = "Concentração de N2";
             label1.TextAlign = ContentAlignment.MiddleCenter;
@@ -225,6 +230,7 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(0, 192, 192);
+            panel2.Controls.Add(buttonSimulator);
             panel2.Controls.Add(button3);
             panel2.Controls.Add(button2);
             panel2.Controls.Add(button1);
@@ -239,40 +245,44 @@
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(200, 469);
+            panel2.Size = new Size(200, 501);
             panel2.TabIndex = 14;
+            panel2.Paint += panel2_Paint;
             // 
             // button3
             // 
             button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button3.Location = new Point(23, 364);
+            button3.Location = new Point(122, 424);
             button3.Name = "button3";
-            button3.Size = new Size(161, 25);
+            button3.Size = new Size(64, 25);
             button3.TabIndex = 13;
             button3.Text = "Enviar .";
             button3.UseVisualStyleBackColor = true;
+            button3.Visible = false;
             button3.Click += button3_Click;
             // 
             // button2
             // 
             button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button2.Location = new Point(23, 333);
+            button2.Location = new Point(120, 393);
             button2.Name = "button2";
-            button2.Size = new Size(161, 25);
+            button2.Size = new Size(64, 25);
             button2.TabIndex = 12;
             button2.Text = "Enviar 2";
             button2.UseVisualStyleBackColor = true;
+            button2.Visible = false;
             button2.Click += button2_Click;
             // 
             // button1
             // 
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button1.Location = new Point(23, 302);
+            button1.Location = new Point(12, 393);
             button1.Name = "button1";
-            button1.Size = new Size(161, 25);
+            button1.Size = new Size(64, 25);
             button1.TabIndex = 11;
             button1.Text = "Enviar 1";
             button1.UseVisualStyleBackColor = true;
+            button1.Visible = false;
             button1.Click += button1_Click;
             // 
             // label2
@@ -287,9 +297,10 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(12, 12);
+            pictureBox1.Image = Properties.Resources.TDG;
+            pictureBox1.Location = new Point(54, 12);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(172, 74);
+            pictureBox1.Size = new Size(87, 74);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -372,7 +383,7 @@
             panel4.Controls.Add(labelReadingStatus);
             panel4.Controls.Add(labelConnectionStatus);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(200, 434);
+            panel4.Location = new Point(200, 466);
             panel4.Name = "panel4";
             panel4.Size = new Size(738, 35);
             panel4.TabIndex = 16;
@@ -476,23 +487,23 @@
             panel8.Dock = DockStyle.Fill;
             panel8.Location = new Point(200, 86);
             panel8.Name = "panel8";
-            panel8.Size = new Size(738, 348);
+            panel8.Size = new Size(738, 380);
             panel8.TabIndex = 18;
             // 
             // chart1
             // 
-            chart1.Anchor = AnchorStyles.Bottom;
             chartArea1.AxisX.Title = "Tempo";
             chartArea1.AxisY.Title = "TDG";
             chartArea1.AxisY2.Title = "Temperatura";
             chartArea1.Name = "ChartArea1";
             chart1.ChartAreas.Add(chartArea1);
+            chart1.Dock = DockStyle.Fill;
             legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
             legend1.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Bold, GraphicsUnit.Point);
             legend1.IsTextAutoFit = false;
             legend1.Name = "Legend1";
             chart1.Legends.Add(legend1);
-            chart1.Location = new Point(0, -3);
+            chart1.Location = new Point(0, 0);
             chart1.Name = "chart1";
             chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel;
             series1.ChartArea = "ChartArea1";
@@ -506,20 +517,31 @@
             series2.Name = "TDG";
             chart1.Series.Add(series1);
             chart1.Series.Add(series2);
-            chart1.Size = new Size(738, 351);
+            chart1.Size = new Size(738, 380);
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
+            // 
+            // buttonSimulator
+            // 
+            buttonSimulator.Location = new Point(68, 364);
+            buttonSimulator.Name = "buttonSimulator";
+            buttonSimulator.Size = new Size(75, 23);
+            buttonSimulator.TabIndex = 14;
+            buttonSimulator.Text = "Simular";
+            buttonSimulator.UseVisualStyleBackColor = true;
+            buttonSimulator.Click += buttonSimulator_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(938, 720);
+            ClientSize = new Size(938, 621);
             Controls.Add(panel8);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(panel4);
             Controls.Add(panel2);
             Controls.Add(txtTerminal);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "MiniTDG-Viewer";
             Load += Form1_Load;
@@ -587,5 +609,6 @@
         private Button button3;
         private Button button2;
         private Button button1;
+        private Button buttonSimulator;
     }
 }

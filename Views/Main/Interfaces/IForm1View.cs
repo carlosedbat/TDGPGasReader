@@ -36,5 +36,7 @@ namespace TDGPGasReader.Views.Main.Interfaces
         void AddTdgOnGraph(DateTime xAxys, double yAxys);
 
         public void LimparGrafico();
+
+        void SetButomConnect(EnumConnectionButom butom);
     }
 }
