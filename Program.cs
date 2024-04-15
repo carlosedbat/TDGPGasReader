@@ -36,8 +36,6 @@ namespace TDGPGasReader
 
                 Application.Run((Form)mainForm);
             }
-
-            Application.Run(new Form1());
         }
 
         private static void ConfigureServices(IServiceCollection services)
