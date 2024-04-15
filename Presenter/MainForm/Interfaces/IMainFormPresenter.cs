@@ -26,5 +26,7 @@ namespace TDGPGasReader.Presenter.MainForm.Interfaces
         public void Enviar2();
 
         public void EnviarPoint();
+
+        public Task Simulate();
     }
 }
