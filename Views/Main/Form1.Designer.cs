@@ -50,6 +50,7 @@
             label1 = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
+            buttonSimulator = new Button();
             button3 = new Button();
             button2 = new Button();
             button1 = new Button();
@@ -72,7 +73,6 @@
             label9 = new Label();
             panel8 = new Panel();
             chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            buttonSimulator = new Button();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)bindingSource2).BeginInit();
             panel1.SuspendLayout();
@@ -248,6 +248,17 @@
             panel2.Size = new Size(200, 501);
             panel2.TabIndex = 14;
             panel2.Paint += panel2_Paint;
+            // 
+            // buttonSimulator
+            // 
+            buttonSimulator.Location = new Point(68, 364);
+            buttonSimulator.Name = "buttonSimulator";
+            buttonSimulator.Size = new Size(75, 23);
+            buttonSimulator.TabIndex = 14;
+            buttonSimulator.Text = "Simular";
+            buttonSimulator.UseVisualStyleBackColor = true;
+            buttonSimulator.Visible = false;
+            buttonSimulator.Click += buttonSimulator_Click;
             // 
             // button3
             // 
@@ -520,16 +531,6 @@
             chart1.Size = new Size(738, 380);
             chart1.TabIndex = 0;
             chart1.Text = "chart1";
-            // 
-            // buttonSimulator
-            // 
-            buttonSimulator.Location = new Point(68, 364);
-            buttonSimulator.Name = "buttonSimulator";
-            buttonSimulator.Size = new Size(75, 23);
-            buttonSimulator.TabIndex = 14;
-            buttonSimulator.Text = "Simular";
-            buttonSimulator.UseVisualStyleBackColor = true;
-            buttonSimulator.Click += buttonSimulator_Click;
             // 
             // Form1
             // 
