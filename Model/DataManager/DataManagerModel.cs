@@ -44,11 +44,11 @@
 
                 extractedDataToSaveDTO.Atm = this._gasCalculatorModel.CalculateATM(extractedDataToSaveDTO.PressureMBar);
 
-                extractedDataToSaveDTO.N2Concentration = this._gasCalculatorModel.CalculateN2Concentration(extractedDataToSaveDTO.Atm);
+                extractedDataToSaveDTO.N2Concentration = this._gasCalculatorModel.CalculateTdgConcentration(extractedDataToSaveDTO.Atm, extractedDataToSaveDTO.SensorTemperature);
 
-                extractedDataToSaveDTO.NitrogenMass = this._gasCalculatorModel.CalculateNitrogenMass(extractedDataToSaveDTO.N2Concentration);
+                extractedDataToSaveDTO.NitrogenMass = this._gasCalculatorModel.CalculateTDGMass(extractedDataToSaveDTO.Atm, extractedDataToSaveDTO.SensorTemperature);
 
-                extractedDataToSaveDTO.TdgPercentual = this._gasCalculatorModel.CalculateTDGPercentual(extractedDataToSaveDTO.NitrogenMass);
+                extractedDataToSaveDTO.TdgPercentual = this._gasCalculatorModel.CalculateTDGPercentage(extractedDataToSaveDTO.Atm, extractedDataToSaveDTO.SensorTemperature);
 
                 return extractedDataToSaveDTO;
             }
