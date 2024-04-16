@@ -344,58 +344,64 @@
 
         private async void SerialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            dataBuffer += serialPort1.ReadExisting();  // Concatena os novos dados no buffer existente
-
-
-            // Verifique se o buffer inicia ou termina com "*", redefina o timer se sim.
-            if (!dataBuffer.StartsWith("P 2"))
+            try
             {
-                mensagemEspecialBuffer += dataBuffer; // Concatena com o buffer de mensagens especiais
-                dataBuffer = ""; // Limpar o buffer de dados normal
+                dataBuffer += serialPort1.ReadExisting();  // Concatena os novos dados no buffer existente
 
-                // Reinicia ou inicia o timer
-                timerParaMensagemEspecial.Stop();
-                timerParaMensagemEspecial.Start();
-            }
-            else if (dataBuffer.Contains("\n"))  // Verifica se existe uma nova linha completa
+
+                // Verifique se o buffer inicia ou termina com "*", redefina o timer se sim.
+                if (!dataBuffer.StartsWith("P 2"))
+                {
+                    mensagemEspecialBuffer += dataBuffer; // Concatena com o buffer de mensagens especiais
+                    dataBuffer = ""; // Limpar o buffer de dados normal
+
+                    // Reinicia ou inicia o timer
+                    timerParaMensagemEspecial.Stop();
+                    timerParaMensagemEspecial.Start();
+                }
+                else if (dataBuffer.Contains("\n"))  // Verifica se existe uma nova linha completa
+                {
+                    // Separa as linhas no buffer
+                    var lines = dataBuffer.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    string lastCompleteLine = lines.Last();  // Pega a última linha completa
+                    dataBuffer = "";  // Limpa o buffer
+
+                    if (lastCompleteLine.Contains("NaN") || lastCompleteLine.Contains("Stop"))
+                    {
+                        // Caso a string contenha "NaN", tenta reconectar
+                        IniciarReconexao();
+                        await Task.Run(() => VerificarReconexao());
+                    }
+                    else if (esperandoCabecalho && lastCompleteLine.Contains("Sensor on."))
+                    {
+                        // Se estiver esperando pelo cabeçalho e ele for recebido
+                        esperandoCabecalho = false;
+                        Enviar1(); // Envia comando para iniciar amostragem
+                    }
+                    else
+                    {
+                        this._extractedData = new ExtractedDataToSaveDTO();
+
+                        this._extractedData = this._dataManager.ParseDataToValues(lastCompleteLine);  // Processa a última linha completa
+
+                        string extractedDataStringed = this._dataManager.ParseDataToShowString(this._extractedData);
+
+                        this._form1.AddDataInTerminal(extractedDataStringed);
+
+                        this._form1.SetTemperature(this._extractedData.SensorTemperature);
+
+                        this._form1.SetTDGPercentual(this._extractedData.TdgPercentual);
+
+                        this._form1.SetNitrogenMass(this._extractedData.NitrogenMass);
+
+                        this._form1.SetN2Concentration(this._extractedData.N2Concentration);
+
+                        this._form1.SetATM(this._extractedData.Atm);
+                    }
+                }
+            }catch (Exception ex)
             {
-                // Separa as linhas no buffer
-                var lines = dataBuffer.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                string lastCompleteLine = lines.Last();  // Pega a última linha completa
-                dataBuffer = "";  // Limpa o buffer
-
-                if (lastCompleteLine.Contains("NaN") || lastCompleteLine.Contains("Stop"))
-                {
-                    // Caso a string contenha "NaN", tenta reconectar
-                    IniciarReconexao();
-                    await Task.Run(() => VerificarReconexao());
-                }
-                else if (esperandoCabecalho && lastCompleteLine.Contains("Sensor on."))
-                {
-                    // Se estiver esperando pelo cabeçalho e ele for recebido
-                    esperandoCabecalho = false;
-                    Enviar1(); // Envia comando para iniciar amostragem
-                }
-                else
-                {
-                    this._extractedData = new ExtractedDataToSaveDTO();
-
-                    this._extractedData = this._dataManager.ParseDataToValues(lastCompleteLine);  // Processa a última linha completa
-
-                    string extractedDataStringed = this._dataManager.ParseDataToShowString(this._extractedData);
-
-                    this._form1.AddDataInTerminal(extractedDataStringed);
-
-                    this._form1.SetTemperature(this._extractedData.SensorTemperature);
-
-                    this._form1.SetTDGPercentual(this._extractedData.TdgPercentual);
-
-                    this._form1.SetNitrogenMass(this._extractedData.NitrogenMass);
-
-                    this._form1.SetN2Concentration(this._extractedData.N2Concentration);
-
-                    this._form1.SetATM(this._extractedData.Atm);
-                }
+                this._form1.ShowErrorMessage(ex.ToString());
             }
         }
 
