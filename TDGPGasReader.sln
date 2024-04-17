@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34003.232
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDGPGasReader", "TDGPGasReader.csproj", "{E682A604-45E6-44DD-87BF-4417CD254727}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TDGPGasReader", "TDGPGasReader.csproj", "{E682A604-45E6-44DD-87BF-4417CD254727}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InstaladorTDGReader", "..\InstaladorTDGReader\InstaladorTDGReader.vdproj", "{1B90DE30-F106-454B-8A34-AED60B5BFE4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{E682A604-45E6-44DD-87BF-4417CD254727}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E682A604-45E6-44DD-87BF-4417CD254727}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E682A604-45E6-44DD-87BF-4417CD254727}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B90DE30-F106-454B-8A34-AED60B5BFE4B}.Debug|Any CPU.ActiveCfg = Debug
+		{1B90DE30-F106-454B-8A34-AED60B5BFE4B}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
