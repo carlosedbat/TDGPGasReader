@@ -213,7 +213,7 @@
             label1.Name = "label1";
             label1.Size = new Size(135, 37);
             label1.TabIndex = 12;
-            label1.Text = "Concentração de N2";
+            label1.Text = "Concentração";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel1
@@ -257,7 +257,6 @@
             buttonSimulator.TabIndex = 14;
             buttonSimulator.Text = "Simular";
             buttonSimulator.UseVisualStyleBackColor = true;
-            buttonSimulator.Visible = false;
             buttonSimulator.Click += buttonSimulator_Click;
             // 
             // button3
@@ -360,7 +359,7 @@
             label6.Name = "label6";
             label6.Size = new Size(133, 37);
             label6.TabIndex = 13;
-            label6.Text = "Massa de Nitrogênio";
+            label6.Text = "Massa";
             label6.TextAlign = ContentAlignment.MiddleCenter;
             label6.Click += label6_Click;
             // 

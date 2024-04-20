@@ -202,7 +202,7 @@
             while (true)
             {
                 Random rnd = new Random();
-                double randomValue = rnd.NextDouble() * (990 - 900) + 900;
+                double randomValue = rnd.NextDouble() * (1400 - 500) + 500;
                 double randomValueRounded = Math.Round(randomValue, 2);
 
 
